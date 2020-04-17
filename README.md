@@ -1,0 +1,2 @@
+# KetangpaiWebtest
+这是一个用python selenium+pytest编写的一个web自动化测试用例
