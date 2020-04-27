@@ -154,16 +154,60 @@ class BasePage:
             self.save_screenshots(doc)
             raise
 
+#alert取消
+    def dismiss_alert(self,doc=''):
+        my_logger.info('弹框取消')
+        try:
+            self.driver.switch_to.alert.dismiss()
+        except:
+            my_logger.exception('弹框取消失败')
+            self.save_screenshots(doc)
+            raise
+
+# alert接受
+    def accert_alert(self,doc=''):
+        my_logger.info('弹框同意键')
+        try:
+            self.driver.switch_to.alert.accept()
+        except:
+            my_logger.exception('弹框按同意键失败')
+            self.save_screenshots(doc)
+            raise
+
 
     #窗口切换
-    def switch_window(self):
+    def switch_window(self,window_name,doc=''):
+        """
 
-        # driver.switch_to.window(window_name)
-        pass
+        :param window_name: 要切换的窗口的名字
+        :param doc: 截图时要使用到的元素模块的名字
+        :return:None
+        """
+        try:
+            my_logger.info("当前要切换的窗口是{0}".format(window_name))
+            self.driver.switch_to.window(window_name)
+        except:
+            my_logger.exception('窗口切换失败{0}'.format(window_name))
+            self.save_screenshots(doc)
+            raise
+
 
     #frame切换
-    def switch_frame(self):
-        pass
+    def switch_frame(self,iframe,doc=""):
+        """
+
+        :param iframe: 可以是iframe的名字、下标或是find_element查找到的元素
+        :param doc: 截图时要用到的元素模块的名字
+        :return: None
+        """
+        my_logger.info('切换到iframe弹框'.format(iframe))
+        try:
+            self.driver.switch_to.frame(iframe)
+        except:
+            my_logger.exception('切换到弹框失败'.format(iframe))
+            self.save_screenshots(doc)
+            raise
+
     #截图操作
     def save_screenshots(self,doc):
         """
@@ -187,6 +231,25 @@ class BasePage:
 
             my_logger.exception("截取失败")
             raise
+
+
+#js调用
+    def excute_js(self,js,*args,doc):
+        """
+
+        :param js: js的脚本
+        :param args: js中的参数
+        :param doc: 截图时需要用到的元素模块的名称
+        :return: None
+        """
+        my_logger.info("调用的js脚本是{0}，所要传的参数是".format(js,*args))
+        try:
+            self.driver.driver.execute_script(js,*args)
+        except:
+            my_logger.exception("调用的js脚本失败，js是{0}，所要传的参数是".format(js,*args))
+            self.save_screenshots(doc)
+            raise
+
 
 
     #文件上传操作
